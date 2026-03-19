@@ -1,3 +1,13 @@
+## [9.7.6] - 2026-03-19
+
+### Added
+
+- **Dependency installer** (`scripts/install-deps.sh`): New `check` and `install` modes that auto-detect and install missing CLIs (Codex, Gemini), jq, and the statusline resolver. Reports recommended plugin status (claude-mem, document-skills) with copy-paste `/plugin install` commands.
+- **Setup dependency check**: `/octo:setup` now runs `install-deps.sh check` first — shows what's missing before provider detection. Offers `install` to fix everything in one shot.
+- **Doctor deps category**: `/octo:doctor` gains a `deps` check category and install step (Step 3) for fixing missing software dependencies.
+
+---
+
 ## [9.7.5] - 2026-03-19
 
 ### Fixed

@@ -3,7 +3,12 @@
 # PreToolUse hook on Bash that warns before destructive command patterns.
 # Activated by /octo:careful command (writes state file).
 # Returns JSON decision: {"decision":"allow"} or {"permissionDecision":"ask","message":"..."}
+#
+# Kill switch: OCTO_CAREFUL_MODE=off — disables all destructive command checks
 set -euo pipefail
+
+# Kill switch — respect user's choice to disable careful mode entirely
+[[ "${OCTO_CAREFUL_MODE:-on}" == "off" ]] && { echo '{"decision":"allow"}'; exit 0; }
 
 # Read tool input from stdin
 if command -v timeout &>/dev/null; then

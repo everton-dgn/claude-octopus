@@ -4,7 +4,12 @@
 # Activated by /octo:freeze command (writes directory to state file).
 # Read, Bash, Glob, Grep are unaffected — investigation stays unrestricted.
 # Returns JSON decision: {"decision":"allow"} or {"permissionDecision":"deny","message":"..."}
+#
+# Kill switch: OCTO_FREEZE_MODE=off — disables freeze boundary enforcement
 set -euo pipefail
+
+# Kill switch
+[[ "${OCTO_FREEZE_MODE:-on}" == "off" ]] && { echo '{"decision":"allow"}'; exit 0; }
 
 # Read tool input from stdin
 if command -v timeout &>/dev/null; then

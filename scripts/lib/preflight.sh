@@ -91,6 +91,43 @@ cmd_detect_providers() {
     fi
     echo ""
 
+    # Check Ollama (optional — local LLM, v9.9.0)
+    if command -v ollama &>/dev/null; then
+        if curl -sf http://localhost:11434/api/tags &>/dev/null; then
+            local model_count
+            model_count=$(curl -sf http://localhost:11434/api/tags 2>/dev/null | grep -c '"name"' 2>/dev/null || echo "0")
+            echo "OLLAMA_STATUS=running"
+            echo "OLLAMA_MODELS=$model_count"
+        else
+            echo "OLLAMA_STATUS=stopped"
+            echo "OLLAMA_MODELS=0"
+        fi
+    else
+        echo "OLLAMA_STATUS=not-installed"
+        echo "OLLAMA_MODELS=0"
+    fi
+    echo ""
+
+    # Check Copilot CLI (optional — zero-cost via GitHub subscription, v9.9.0)
+    if command -v copilot &>/dev/null; then
+        local copilot_auth="none"
+        if [[ -n "${COPILOT_GITHUB_TOKEN:-}" ]]; then
+            copilot_auth="pat"
+        elif [[ -n "${GH_TOKEN:-}" ]] || [[ -n "${GITHUB_TOKEN:-}" ]]; then
+            copilot_auth="env-token"
+        elif [[ -f "${HOME}/.copilot/config.json" ]]; then
+            copilot_auth="keychain"
+        elif command -v gh &>/dev/null && gh auth status &>/dev/null 2>&1; then
+            copilot_auth="gh-cli"
+        fi
+        echo "COPILOT_STATUS=ok"
+        echo "COPILOT_AUTH=$copilot_auth"
+    else
+        echo "COPILOT_STATUS=not-installed"
+        echo "COPILOT_AUTH=none"
+    fi
+    echo ""
+
     # Write to cache
     mkdir -p "$WORKSPACE_DIR"
     local codex_status=$(command -v codex &>/dev/null && echo "ok" || echo "missing")
@@ -99,6 +136,8 @@ cmd_detect_providers() {
     local gemini_auth=$([[ -f "$HOME/.gemini/oauth_creds.json" ]] && echo "oauth" || [[ -n "${GEMINI_API_KEY:-}" ]] && echo "api-key" || echo "none")
     local perplexity_status=$([[ -n "${PERPLEXITY_API_KEY:-}" ]] && echo "ok" || echo "not-configured")
     local perplexity_auth=$([[ -n "${PERPLEXITY_API_KEY:-}" ]] && echo "api-key" || echo "none")
+    local ollama_status=$(command -v ollama &>/dev/null && { curl -sf http://localhost:11434/api/tags &>/dev/null && echo "running" || echo "stopped"; } || echo "not-installed")
+    local copilot_status=$(command -v copilot &>/dev/null && echo "ok" || echo "not-installed")
 
     cat > "$WORKSPACE_DIR/.provider-cache" <<EOF
 # Auto-generated on $(date)
@@ -115,6 +154,12 @@ GEMINI_AUTH=$gemini_auth
 # Perplexity Status (v8.24.0)
 PERPLEXITY_STATUS=$perplexity_status
 PERPLEXITY_AUTH=$perplexity_auth
+
+# Ollama Status (v9.9.0)
+OLLAMA_STATUS=$ollama_status
+
+# Copilot Status (v9.9.0)
+COPILOT_STATUS=$copilot_status
 
 # Timestamp
 CACHE_TIME=$(date +%s)
@@ -146,6 +191,22 @@ EOF
         echo "  ✓ Perplexity: Configured ($perplexity_auth) — web search enabled in discover workflows"
     else
         echo "  ○ Perplexity: Not configured (optional — adds live web search to research)"
+    fi
+
+    # Ollama (optional, v9.9.0)
+    if [[ "$ollama_status" == "running" ]]; then
+        echo "  ✓ Ollama: Running — zero-cost local LLM"
+    elif [[ "$ollama_status" == "stopped" ]]; then
+        echo "  ⚠ Ollama: Installed but server not running (run: ollama serve)"
+    else
+        echo "  ○ Ollama: Not installed (optional — brew install ollama)"
+    fi
+
+    # Copilot (optional, v9.9.0)
+    if [[ "$copilot_status" == "ok" ]]; then
+        echo "  ✓ Copilot: Installed — zero-cost research via GitHub subscription"
+    else
+        echo "  ○ Copilot: Not installed (optional — brew install copilot-cli)"
     fi
     echo ""
 

@@ -2103,6 +2103,35 @@ detect_providers() {
         result="${result}openrouter:api-key "
     fi
 
+    # Detect Perplexity (API key only)
+    if [[ -n "${PERPLEXITY_API_KEY:-}" ]]; then
+        result="${result}perplexity:api-key "
+    fi
+
+    # Detect Ollama (CLI + server)
+    if command -v ollama &>/dev/null; then
+        if curl -sf http://localhost:11434/api/tags &>/dev/null; then
+            result="${result}ollama:running "
+        else
+            result="${result}ollama:installed "
+        fi
+    fi
+
+    # Detect Copilot CLI (v9.9.0)
+    if command -v copilot &>/dev/null; then
+        local copilot_auth="none"
+        if [[ -n "${COPILOT_GITHUB_TOKEN:-}" ]]; then
+            copilot_auth="pat"
+        elif [[ -n "${GH_TOKEN:-}" ]] || [[ -n "${GITHUB_TOKEN:-}" ]]; then
+            copilot_auth="env-token"
+        elif [[ -f "${HOME}/.copilot/config.json" ]]; then
+            copilot_auth="keychain"
+        elif command -v gh &>/dev/null && gh auth status &>/dev/null 2>&1; then
+            copilot_auth="gh-cli"
+        fi
+        result="${result}copilot:${copilot_auth} "
+    fi
+
     # Fail gracefully with helpful message if no providers found
     if [[ -z "$result" ]]; then
         log WARN "No AI providers detected. Install at least one:"
@@ -2110,6 +2139,8 @@ detect_providers() {
         log WARN "  - Gemini: npm i -g @google/gemini-cli"
         log WARN "  - Claude: Available in Claude Code context"
         log WARN "  - OpenRouter: Set OPENROUTER_API_KEY environment variable"
+        log WARN "  - Copilot: brew install copilot-cli (zero additional cost)"
+        log WARN "  - Ollama: brew install ollama (free local LLM)"
         echo "none:unavailable"
         return 1
     fi
@@ -2197,6 +2228,19 @@ is_agent_available_v2() {
             ;;
         openrouter|openrouter-*)
             [[ "$PROVIDER_OPENROUTER_ENABLED" == "true" && "$PROVIDER_OPENROUTER_API_KEY_SET" == "true" ]]
+            ;;
+        perplexity|perplexity-fast)
+            [[ -n "${PERPLEXITY_API_KEY:-}" ]]
+            ;;
+        ollama*)
+            command -v ollama &>/dev/null && curl -sf http://localhost:11434/api/tags &>/dev/null
+            ;;
+        copilot|copilot-research)
+            command -v copilot &>/dev/null && {
+                [[ -n "${COPILOT_GITHUB_TOKEN:-}" ]] || [[ -n "${GH_TOKEN:-}" ]] || \
+                [[ -n "${GITHUB_TOKEN:-}" ]] || [[ -f "${HOME}/.copilot/config.json" ]] || \
+                { command -v gh &>/dev/null && gh auth status &>/dev/null 2>&1; }
+            }
             ;;
         *)
             return 0  # Unknown agents assumed available

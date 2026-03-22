@@ -66,6 +66,24 @@ check_deps() {
         missing+=("gemini:Gemini CLI — npm install -g @google/gemini-cli")
     fi
 
+    # Ollama (optional — local LLM)
+    if has_cmd ollama; then
+        if curl -sf http://localhost:11434/api/tags &>/dev/null; then
+            ok+=("ollama:Ollama installed and running")
+        else
+            warnings+=("ollama_stopped:Ollama installed but server not running — run: ollama serve")
+        fi
+    else
+        warnings+=("ollama:Ollama not installed (optional) — brew install ollama for zero-cost local LLM")
+    fi
+
+    # GitHub Copilot CLI (optional — zero additional cost)
+    if has_cmd copilot; then
+        ok+=("copilot:Copilot CLI installed")
+    else
+        warnings+=("copilot:Copilot CLI not installed (optional) — brew install copilot-cli for zero-cost research")
+    fi
+
     # Statusline resolver
     local resolver="$HOME/.claude-octopus/statusline.sh"
     if [[ -f "$resolver" ]]; then

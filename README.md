@@ -1,19 +1,19 @@
 # Claude Octopus
 
-A Claude Code plugin that turns one model into three. Orchestrates Codex, Gemini, and Claude with distinct roles, adversarial review, and consensus gates — so no single model's blind spots slip through.
+A Claude Code plugin that orchestrates seven AI providers with distinct roles, adversarial review, and consensus gates — so no single model's blind spots slip through.
 
 <p align="center">
   <img src="assets/social-preview.jpg" alt="Claude Octopus" width="640">
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-9.9.1-blue" alt="Version 9.9.1">
+  <img src="https://img.shields.io/badge/Version-9.9.2-blue" alt="Version 9.9.2">
   <img src="https://img.shields.io/badge/Claude_Code-v2.1.50+-blueviolet" alt="Requires Claude Code v2.1.50+">
   <img src="https://img.shields.io/badge/Factory_AI-Compatible-orange" alt="Factory AI Compatible">
   <img src="https://img.shields.io/badge/License-MIT-green" alt="MIT License">
 </p>
 
-🐙 **Three brains, one workflow.** Other multi-AI tools run providers in parallel and hand you three answers. Octopus assigns each model a distinct role — Codex for implementation depth, Gemini for ecosystem breadth, Claude for synthesis — then enforces a 75% consensus gate before anything ships. Disagreements get caught, not ignored.
+🐙 **Seven providers, one workflow.** Other multi-AI tools run providers in parallel and hand you separate answers. Octopus assigns each model a distinct role — Codex for implementation depth, Gemini for ecosystem breadth, Claude for synthesis — then enforces a 75% consensus gate before anything ships. Disagreements get caught, not ignored.
 
 🧠 **Persistent cross-session memory.** Deeply integrates with [claude-mem](https://github.com/thedotmack/claude-mem) for searchable, persistent memory across conversations — past decisions, research, and context survive session boundaries so your next workflow picks up where the last one left off.
 
@@ -33,6 +33,7 @@ A Claude Code plugin that turns one model into three. Orchestrates Codex, Gemini
 
 | Version | What shipped |
 |---------|-------------|
+| **9.9.2** | **Doc consolidation** — 9 stale docs removed (archived to dev repo), provider counts normalized to 7 across all docs, debate refs updated to four-way, new `config/providers/copilot/CLAUDE.md`. |
 | **9.9.0** | **Copilot CLI + Ollama providers** — GitHub Copilot CLI (GA) as optional zero-cost provider via `copilot -p` programmatic mode with 5-tier fallback auth. Ollama as local LLM provider with CLI dispatch + ANTHROPIC_BASE_URL bridge. Adapter bug fixes: debate flag placement, quality_threshold forwarding, env var allowlists. ARCHITECTURE.md updated to 7-provider model. 23 new adapter tests. |
 | **9.8.0** | **Adversarial debate everywhere** — 9 workflows now use multi-LLM cross-checking (multi, spec, define, factory, develop, prd, staged-review, parallel, tdd). **Visual indicators on all commands** — every `/octo:*` command shows a 🐙 activation line so you always know what's running. **CI fixes** — test-debate-skill.sh and test-packaging-integrity.sh smoke tests repaired. |
 | **9.5–9.7** | **Context awareness** — workflow-aware warnings at 65/75/80% with phase-specific advice. **Polished statusline** — gradient bar, active agent name, auto-compact indicators (⚠/💀). **Session handoff** — `.octo-continue.md` preserves multi-LLM workflow state across sessions. **Smart router renamed** `/octo:auto`. **Intent pre-loading** — high-confidence prompts inject persona context before workflow starts. |

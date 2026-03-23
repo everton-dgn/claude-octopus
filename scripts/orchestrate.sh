@@ -2146,6 +2146,20 @@ detect_providers() {
         result="${result}qwen:${qwen_auth} "
     fi
 
+    # Detect OpenCode CLI (v9.11.0 — multi-provider router)
+    if command -v opencode &>/dev/null; then
+        local opencode_auth="none"
+        if [[ -f "${HOME}/.local/share/opencode/auth.json" ]]; then
+            # Verify auth is actually valid via auth list (with timeout to prevent hang)
+            if timeout 3 opencode auth list &>/dev/null 2>&1; then
+                opencode_auth="multi"
+            else
+                opencode_auth="expired"
+            fi
+        fi
+        result="${result}opencode:${opencode_auth} "
+    fi
+
     # Fail gracefully with helpful message if no providers found
     if [[ -z "$result" ]]; then
         log WARN "No AI providers detected. Install at least one:"
@@ -2156,6 +2170,7 @@ detect_providers() {
         log WARN "  - Copilot: brew install copilot-cli (zero additional cost)"
         log WARN "  - Ollama: brew install ollama (free local LLM)"
         log WARN "  - Qwen: npm i -g @qwen-code/qwen-code (free tier)"
+        log WARN "  - OpenCode: npm i -g opencode (multi-provider router)"
         echo "none:unavailable"
         return 1
     fi
@@ -2263,6 +2278,9 @@ is_agent_available_v2() {
                 [[ -f "${HOME}/.qwen/config.json" ]] || \
                 [[ -n "${QWEN_API_KEY:-}" ]]
             }
+            ;;
+        opencode|opencode-fast|opencode-research)
+            [[ "$PROVIDER_OPENCODE_INSTALLED" == "true" && "$PROVIDER_OPENCODE_AUTH_METHOD" != "none" ]]
             ;;
         *)
             return 0  # Unknown agents assumed available

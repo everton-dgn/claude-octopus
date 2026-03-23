@@ -202,6 +202,7 @@ Before running workflows, check provider availability:
 - Ollama: `command -v ollama` + server health at http://localhost:11434
 - Copilot CLI: `command -v copilot` + auth (COPILOT_GITHUB_TOKEN or gh CLI)
 - Qwen CLI: `command -v qwen` + auth (~/.qwen/oauth_creds.json or QWEN_API_KEY)
+- OpenCode CLI: `command -v opencode` + auth (`opencode auth list` exit code)
 
 If a provider is unavailable, note it in the banner:
 ```
@@ -222,6 +223,7 @@ Always be mindful that external CLIs cost money:
 - 🔵 Claude (Sonnet 4.6): Included with Claude Code subscription
 - 🔵 Claude (Opus 4.6): $5/$25 per MTok input/output when using `claude-opus` agent type
 - 🔵 Claude (Opus 4.6 Fast): **$30/$150 per MTok** (6x standard) - lower latency, extra-usage billing (v2.1.36+)
+- 🟤 OpenCode: Variable cost — free for native models, uses backend provider pricing when routing to OpenAI/Google
 
 Note: Some OpenAI models (o-series reasoning, gpt-4.1, gpt-5.4-pro) require API keys and are NOT available via ChatGPT subscription/OAuth auth.
 

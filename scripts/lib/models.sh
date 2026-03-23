@@ -42,6 +42,10 @@ get_model_catalog() {
         z-ai/glm-5)             echo "203|yes|no|no|openrouter|standard|active" ;;
         moonshotai/kimi-k2.5)   echo "262|yes|yes|no|openrouter|standard|active" ;;
         deepseek/deepseek-r1-0528) echo "164|yes|no|yes|openrouter|standard|active" ;;
+        # OpenCode (multi-provider router — models use provider/model format)
+        google/gemini-2.5-flash) echo "1000|yes|no|no|opencode|budget|active" ;;
+        openai/gpt-5.4)         echo "400|yes|yes|no|opencode|premium|active" ;;
+        openai/gpt-5.4-mini)    echo "400|yes|no|no|opencode|budget|active" ;;
         # Perplexity
         sonar-pro)              echo "128|no|no|no|perplexity|standard|active" ;;
         sonar)                  echo "128|no|no|no|perplexity|budget|active" ;;

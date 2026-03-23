@@ -810,6 +810,13 @@ get_cost_tier_for_subscription() {
                 *) echo "medium" ;;
             esac
             ;;
+        opencode)
+            case "$sub_tier" in
+                free) echo "free" ;;
+                api-only) echo "pay-per-use" ;;
+                *) echo "variable" ;;
+            esac
+            ;;
         *)
             echo "pay-per-use"
             ;;

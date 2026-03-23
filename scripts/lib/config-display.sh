@@ -87,6 +87,20 @@ show_config_summary() {
     fi
     echo ""
 
+    # OpenCode Status
+    echo -e "  ${CYAN}┌─ OPENCODE (Multi-Provider Router)${NC}"
+    if [[ "$PROVIDER_OPENCODE_INSTALLED" == "true" && "$PROVIDER_OPENCODE_AUTH_METHOD" != "none" ]]; then
+        echo -e "  ${CYAN}│${NC}  ${GREEN}✓${NC} Configured"
+        echo -e "  ${CYAN}│${NC}  Auth:      ${GREEN}$PROVIDER_OPENCODE_AUTH_METHOD${NC}"
+        echo -e "  ${CYAN}│${NC}  Tier:      ${GREEN}$PROVIDER_OPENCODE_TIER${NC}"
+        echo -e "  ${CYAN}│${NC}  Cost Tier: ${YELLOW}$PROVIDER_OPENCODE_COST_TIER${NC} (varies by backend model)"
+    else
+        echo -e "  ${CYAN}│${NC}  ${YELLOW}○${NC} Not configured (Optional)"
+        echo -e "  ${CYAN}│${NC}  ${YELLOW}→${NC} Install: ${CYAN}npm install -g opencode${NC}"
+        echo -e "  ${CYAN}│${NC}  ${YELLOW}→${NC} Configure: ${CYAN}opencode auth login${NC}"
+    fi
+    echo ""
+
     # OpenRouter Status
     echo -e "  ${CYAN}┌─ OPENROUTER (Universal Fallback)${NC}"
     if [[ "$PROVIDER_OPENROUTER_ENABLED" == "true" && "$PROVIDER_OPENROUTER_API_KEY_SET" == "true" ]]; then

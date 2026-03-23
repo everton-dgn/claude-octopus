@@ -100,6 +100,16 @@ get_agent_command() {
         qwen|qwen-research)  # v9.10.0: Qwen CLI — fork of Gemini CLI (free tier)
             echo "env NODE_NO_WARNINGS=1 qwen -o text --approval-mode yolo"
             ;;
+        opencode|opencode-fast|opencode-research)  # v9.11.0: OpenCode CLI — multi-provider router
+            model=$(get_agent_model "$agent_type" "$phase" "$role")
+            # Uses default text output (ANSI stripped by caller) — consistent with other providers
+            # --model flag uses provider/model format; we store bare name and map here
+            local oc_model_flag=""
+            if [[ -n "$model" && "$model" != "default" ]]; then
+                oc_model_flag="-m ${model}"
+            fi
+            echo "opencode run ${oc_model_flag}"
+            ;;
         *) return 1 ;;
     esac
 }
@@ -159,6 +169,7 @@ get_agent_model() {
         openrouter*) provider="openrouter" ;;
         perplexity*) provider="perplexity" ;;
         qwen*)       provider="qwen" ;;
+        opencode*)   provider="opencode" ;;
     esac
 
     local resolved_model
@@ -191,6 +202,7 @@ validate_model_allowed() {
         openrouter) allowlist_var="OCTOPUS_OPENROUTER_ALLOWED_MODELS" ;;
         perplexity) allowlist_var="OCTOPUS_PERPLEXITY_ALLOWED_MODELS" ;;
         qwen)       allowlist_var="OCTOPUS_QWEN_ALLOWED_MODELS" ;;
+        opencode)   allowlist_var="OCTOPUS_OPENCODE_ALLOWED_MODELS" ;;
         *)          return 0 ;;  # Unknown provider — allow
     esac
 

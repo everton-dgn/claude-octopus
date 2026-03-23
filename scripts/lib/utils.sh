@@ -181,6 +181,10 @@ validate_agent_command() {
             return 0 ;;
         "copilot "*|"copilot")   # GitHub Copilot CLI
             return 0 ;;
+        "opencode "*|"opencode")  # v9.11.0: OpenCode CLI multi-provider router
+            return 0 ;;
+        "ollama "*|"ollama")      # Ollama local LLM
+            return 0 ;;
         "env NODE_NO_WARNINGS="*) # only allow env with NODE_NO_WARNINGS prefix
             return 0 ;;
         *)

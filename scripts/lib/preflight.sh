@@ -128,6 +128,25 @@ cmd_detect_providers() {
     fi
     echo ""
 
+    # Check OpenCode CLI (optional — multi-provider router, v9.11.0)
+    if command -v opencode &>/dev/null; then
+        local opencode_auth="none"
+        if [[ -f "${HOME}/.local/share/opencode/auth.json" ]]; then
+            # Verify auth is valid (with timeout to prevent interactive prompts)
+            if timeout 3 opencode auth list &>/dev/null 2>&1; then
+                opencode_auth="multi"
+            else
+                opencode_auth="expired"
+            fi
+        fi
+        echo "OPENCODE_STATUS=ok"
+        echo "OPENCODE_AUTH=$opencode_auth"
+    else
+        echo "OPENCODE_STATUS=not-installed"
+        echo "OPENCODE_AUTH=none"
+    fi
+    echo ""
+
     # Check Qwen CLI (optional — free tier via Qwen OAuth, v9.10.0)
     if command -v qwen &>/dev/null; then
         local qwen_auth="none"
@@ -157,6 +176,7 @@ cmd_detect_providers() {
     local ollama_status=$(command -v ollama &>/dev/null && { curl -sf http://localhost:11434/api/tags &>/dev/null && echo "running" || echo "stopped"; } || echo "not-installed")
     local copilot_status=$(command -v copilot &>/dev/null && echo "ok" || echo "not-installed")
     local qwen_status=$(command -v qwen &>/dev/null && echo "ok" || echo "not-installed")
+    local opencode_status=$(command -v opencode &>/dev/null && echo "ok" || echo "not-installed")
 
     cat > "$WORKSPACE_DIR/.provider-cache" <<EOF
 # Auto-generated on $(date)
@@ -182,6 +202,9 @@ COPILOT_STATUS=$copilot_status
 
 # Qwen Status (v9.10.0)
 QWEN_STATUS=$qwen_status
+
+# OpenCode Status (v9.11.0)
+OPENCODE_STATUS=$opencode_status
 
 # Timestamp
 CACHE_TIME=$(date +%s)
@@ -236,6 +259,11 @@ EOF
         echo "  ✓ Qwen: Installed — free-tier research via Qwen OAuth"
     else
         echo "  ○ Qwen: Not installed (optional — npm install -g @qwen-code/qwen-code)"
+    fi
+    if [[ "$opencode_status" == "ok" ]]; then
+        echo "  ✓ OpenCode: Installed — multi-provider router (google, openai, openrouter)"
+    else
+        echo "  ○ OpenCode: Not installed (optional — npm install -g opencode)"
     fi
     echo ""
 

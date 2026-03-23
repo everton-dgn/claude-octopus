@@ -99,6 +99,7 @@ IMPORTANT: If you find yourself searching or grepping more than 3 times in a row
         copilot*) provider_name="copilot" ;;
         ollama*) provider_name="ollama" ;;
         qwen*) provider_name="qwen" ;;
+        opencode*) provider_name="opencode" ;;
         *) provider_name="$agent_type" ;;
     esac
     update_metrics "provider" "$provider_name" 2>/dev/null || true

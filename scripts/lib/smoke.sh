@@ -29,6 +29,12 @@ PROVIDER_CLAUDE_TIER="pro"
 PROVIDER_CLAUDE_COST_TIER="medium"
 PROVIDER_CLAUDE_PRIORITY=1
 
+PROVIDER_OPENCODE_INSTALLED="false"
+PROVIDER_OPENCODE_AUTH_METHOD="none"
+PROVIDER_OPENCODE_TIER="free"
+PROVIDER_OPENCODE_COST_TIER="variable"
+PROVIDER_OPENCODE_PRIORITY=4
+
 PROVIDER_OPENROUTER_ENABLED="false"
 PROVIDER_OPENROUTER_API_KEY_SET="false"
 PROVIDER_OPENROUTER_ROUTING_PREF="default"
@@ -59,6 +65,9 @@ get_provider_capabilities() {
             ;;
         claude)
             echo "code,chat,analysis,long-context"
+            ;;
+        opencode)
+            echo "code,chat,analysis"
             ;;
         openrouter)
             echo "code,chat,vision,analysis,long-context"
@@ -92,6 +101,9 @@ get_provider_context_limit() {
             ;;
         codex:*)
             echo "64000"
+            ;;
+        opencode:*)
+            echo "128000"  # Varies by backend model (generic)
             ;;
         openrouter:*)
             echo "128000"  # Varies by model (generic)
@@ -131,7 +143,7 @@ load_providers_config() {
         [[ -z "${line// }" ]] && continue
 
         # Detect provider section headers (e.g., "  codex:")
-        if [[ "$line" =~ ^[[:space:]]*(codex|gemini|claude|openrouter): ]]; then
+        if [[ "$line" =~ ^[[:space:]]*(codex|gemini|claude|opencode|openrouter): ]]; then
             current_provider="${BASH_REMATCH[1]}"
             continue
         fi
@@ -179,6 +191,15 @@ load_providers_config() {
                         priority) PROVIDER_CLAUDE_PRIORITY="$value" ;;
                     esac
                     ;;
+                opencode)
+                    case "$key" in
+                        installed) PROVIDER_OPENCODE_INSTALLED="$value" ;;
+                        auth_method) PROVIDER_OPENCODE_AUTH_METHOD="$value" ;;
+                        subscription_tier) PROVIDER_OPENCODE_TIER="$value" ;;
+                        cost_tier) PROVIDER_OPENCODE_COST_TIER="$value" ;;
+                        priority) PROVIDER_OPENCODE_PRIORITY="$value" ;;
+                    esac
+                    ;;
                 openrouter)
                     case "$key" in
                         enabled) PROVIDER_OPENROUTER_ENABLED="$value" ;;
@@ -214,6 +235,12 @@ load_providers_config() {
     PROVIDER_CLAUDE_TIER="${PROVIDER_CLAUDE_TIER:-pro}"
     PROVIDER_CLAUDE_COST_TIER="${PROVIDER_CLAUDE_COST_TIER:-medium}"
     PROVIDER_CLAUDE_PRIORITY="${PROVIDER_CLAUDE_PRIORITY:-1}"
+
+    PROVIDER_OPENCODE_INSTALLED="${PROVIDER_OPENCODE_INSTALLED:-false}"
+    PROVIDER_OPENCODE_AUTH_METHOD="${PROVIDER_OPENCODE_AUTH_METHOD:-none}"
+    PROVIDER_OPENCODE_TIER="${PROVIDER_OPENCODE_TIER:-free}"
+    PROVIDER_OPENCODE_COST_TIER="${PROVIDER_OPENCODE_COST_TIER:-variable}"
+    PROVIDER_OPENCODE_PRIORITY="${PROVIDER_OPENCODE_PRIORITY:-4}"
 
     PROVIDER_OPENROUTER_ENABLED="${PROVIDER_OPENROUTER_ENABLED:-false}"
     PROVIDER_OPENROUTER_API_KEY_SET="${PROVIDER_OPENROUTER_API_KEY_SET:-false}"
@@ -256,6 +283,12 @@ auto_detect_provider_config() {
                 # Detect tier (defaults to pro for Claude Code users)
                 PROVIDER_CLAUDE_TIER=$(detect_tier_claude)
                 PROVIDER_CLAUDE_COST_TIER=$(get_cost_tier_for_subscription "claude" "$PROVIDER_CLAUDE_TIER")
+                ;;
+            opencode)
+                PROVIDER_OPENCODE_INSTALLED="true"
+                PROVIDER_OPENCODE_AUTH_METHOD="$auth"
+                PROVIDER_OPENCODE_TIER=$(detect_tier_opencode "$auth")
+                PROVIDER_OPENCODE_COST_TIER=$(get_cost_tier_for_subscription "opencode" "$PROVIDER_OPENCODE_TIER")
                 ;;
             openrouter)
                 PROVIDER_OPENROUTER_ENABLED="true"
@@ -470,6 +503,34 @@ detect_tier_claude() {
     return 0
 }
 
+# Detect OpenCode subscription tier via auth list
+detect_tier_opencode() {
+    local auth_method="$1"
+    local fallback_tier="free"
+
+    # Check cache first
+    if tier_cache_valid "opencode"; then
+        local cached_tier
+        cached_tier=$(tier_cache_read "opencode")
+        if [[ -n "$cached_tier" ]]; then
+            [[ "$VERBOSE" == "true" ]] && log DEBUG "Using cached OpenCode tier: $cached_tier" || true
+            echo "$cached_tier"
+            return 0
+        fi
+    fi
+
+    # OpenCode supports multiple backend providers; tier depends on configured backends
+    if [[ "$auth_method" == "oauth" || "$auth_method" == "multi" ]]; then
+        fallback_tier="free"
+    elif [[ "$auth_method" == "api-key" ]]; then
+        fallback_tier="api-only"
+    fi
+
+    tier_cache_write "opencode" "$fallback_tier"
+    echo "$fallback_tier"
+    return 0
+}
+
 # Save provider configuration to file
 save_providers_config() {
     mkdir -p "$(dirname "$PROVIDERS_CONFIG_FILE")"
@@ -501,6 +562,13 @@ providers:
     subscription_tier: "$PROVIDER_CLAUDE_TIER"
     cost_tier: "$PROVIDER_CLAUDE_COST_TIER"
     priority: $PROVIDER_CLAUDE_PRIORITY
+
+  opencode:
+    installed: $PROVIDER_OPENCODE_INSTALLED
+    auth_method: "$PROVIDER_OPENCODE_AUTH_METHOD"
+    subscription_tier: "$PROVIDER_OPENCODE_TIER"
+    cost_tier: "$PROVIDER_OPENCODE_COST_TIER"
+    priority: $PROVIDER_OPENCODE_PRIORITY
 
   openrouter:
     enabled: $PROVIDER_OPENROUTER_ENABLED
@@ -548,6 +616,12 @@ score_provider() {
             cost_tier="$PROVIDER_CLAUDE_COST_TIER"
             sub_tier="$PROVIDER_CLAUDE_TIER"
             priority="$PROVIDER_CLAUDE_PRIORITY"
+            ;;
+        opencode)
+            [[ "$PROVIDER_OPENCODE_INSTALLED" == "true" && "$PROVIDER_OPENCODE_AUTH_METHOD" != "none" ]] && is_available="true"
+            cost_tier="$PROVIDER_OPENCODE_COST_TIER"
+            sub_tier="$PROVIDER_OPENCODE_TIER"
+            priority="$PROVIDER_OPENCODE_PRIORITY"
             ;;
         openrouter)
             [[ "$PROVIDER_OPENROUTER_ENABLED" == "true" && "$PROVIDER_OPENROUTER_API_KEY_SET" == "true" ]] && is_available="true"
@@ -674,7 +748,7 @@ select_provider() {
     local best_provider=""
     local best_score=-1
 
-    for provider in codex gemini claude openrouter; do
+    for provider in codex gemini claude opencode openrouter; do
         local score
         score=$(score_provider "$provider" "$task_type" "$complexity")
 
@@ -730,6 +804,11 @@ show_provider_status() {
         agent_teams_info="  [Agent Teams: available]"
     fi
     echo -e "${CYAN}║${NC}  Claude:         $claude_status  [$PROVIDER_CLAUDE_AUTH_METHOD]  $PROVIDER_CLAUDE_TIER ($PROVIDER_CLAUDE_COST_TIER)${agent_teams_info}  ${CYAN}║${NC}"
+
+    # OpenCode
+    local opencode_status="${RED}✗${NC}"
+    [[ "$PROVIDER_OPENCODE_INSTALLED" == "true" && "$PROVIDER_OPENCODE_AUTH_METHOD" != "none" ]] && opencode_status="${GREEN}✓${NC}"
+    echo -e "${CYAN}║${NC}  OpenCode:       $opencode_status  [$PROVIDER_OPENCODE_AUTH_METHOD]  $PROVIDER_OPENCODE_TIER ($PROVIDER_OPENCODE_COST_TIER)  ${CYAN}║${NC}"
 
     # OpenRouter
     local openrouter_status="${RED}✗${NC}"

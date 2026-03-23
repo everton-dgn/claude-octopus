@@ -1,6 +1,6 @@
 ---
 name: octopus-quick
-description: Quick execution for ad-hoc tasks without workflow overhead
+description: Quick execution for ad-hoc tasks without full workflow overhead — use for small, self-contained requests
 aliases:
   - quick
   - quick-mode

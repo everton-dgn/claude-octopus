@@ -4,7 +4,7 @@ aliases:
   - spec
   - nlspec
   - specification
-description: NLSpec authoring — structured specification from multi-AI research
+description: NLSpec authoring — use when you need a structured specification from multi-AI research and consensus
 execution_mode: enforced
 validation_gates:
   - orchestrate_sh_executed

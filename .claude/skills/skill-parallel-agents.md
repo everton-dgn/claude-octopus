@@ -1,6 +1,6 @@
 ---
 name: skill-parallel-agents
-description: Multi-tentacled orchestration using Double Diamond methodology
+description: Decompose large tasks across parallel agents — use for migrations, multi-file refactors, or batch work
 trigger: |
   PRIORITY TRIGGERS (always invoke immediately):
   - "/octo:multi" (explicit command)

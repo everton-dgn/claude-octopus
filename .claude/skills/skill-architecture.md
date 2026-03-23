@@ -1,6 +1,6 @@
 ---
 name: octopus-architecture
-description: System architecture and API design with multi-AI consensus
+description: System architecture and API design with multi-AI consensus — use for design reviews and new subsystems
 execution_mode: enforced
 pre_execution_contract:
   - visual_indicators_displayed

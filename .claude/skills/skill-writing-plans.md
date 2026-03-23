@@ -1,6 +1,6 @@
 ---
 name: skill-writing-plans
-description: Zero-context implementation plans with bite-sized tasks
+description: Create zero-context implementation plans with bite-sized tasks — use for multi-step feature planning
 trigger: |
   Use when you have a spec or requirements for a multi-step task.
   Auto-invoke when user says "plan how to implement X", "create implementation plan", 

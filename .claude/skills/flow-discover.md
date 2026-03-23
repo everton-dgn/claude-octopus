@@ -5,7 +5,7 @@ aliases:
   - discover-workflow
   - probe
   - probe-workflow
-description: Multi-AI research using Codex and Gemini CLIs (Double Diamond Discover phase)
+description: Multi-AI research using Codex and Gemini CLIs — use for broad exploration before scoping a feature
   - Questions about best practices, patterns, or ecosystem research
 
   PRIORITY TRIGGERS (always invoke): "octo research", "octo discover", "co-research", "co-discover"

@@ -3,7 +3,7 @@ name: skill-code-review
 aliases:
   - review
   - code-review
-description: Expert multi-AI code review with quality and security analysis
+description: Expert multi-AI code review with inline PR comments — use for thorough quality and security analysis
 context: fork
 agent: Explore
 execution_mode: enforced

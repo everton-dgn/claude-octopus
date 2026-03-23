@@ -4,7 +4,7 @@ user-invocable: true
 aliases:
   - config
   - configure
-description: Configure Claude Octopus providers and preferences
+description: Configure Claude Octopus providers, models, and preferences — use for initial setup or provider changes
 trigger: |
   Use this skill when the user wants to "configure Claude Octopus", "setup octopus",
   "configure providers", "set up API keys for octopus", or mentions octopus configuration.

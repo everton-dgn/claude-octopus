@@ -1,6 +1,6 @@
 ---
 name: skill-prd
-description: AI-optimized PRD creation with 100-point scoring framework
+description: Write an AI-optimized PRD using multi-AI orchestration — use when scoping a new feature or product
 context: fork
 agent: Plan
 ---

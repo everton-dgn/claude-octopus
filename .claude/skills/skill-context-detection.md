@@ -1,6 +1,6 @@
 ---
 name: skill-context-detection
-description: "Auto-detect work context (Dev vs Knowledge) for workflow tailoring"
+description: "Auto-detect work context (Dev vs Knowledge) — use to tailor workflows based on current task type"
 ---
 
 # Context Detection - Internal Skill

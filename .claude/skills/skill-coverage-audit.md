@@ -3,7 +3,7 @@ name: skill-coverage-audit
 aliases:
   - coverage-audit
   - test-coverage
-description: "Trace codepaths in diffs, map against tests, auto-generate missing coverage"
+description: "Trace codepaths in diffs, map against tests, auto-generate missing coverage — use before shipping PRs"
 trigger: |
   AUTOMATICALLY ACTIVATE when user requests coverage analysis:
   - "check test coverage" or "coverage audit"

@@ -4,7 +4,7 @@ aliases:
   - security-framing
   - content-sanitization
   - url-validation
-description: URL validation and content wrapping for untrusted sources
+description: URL validation and content sanitization for untrusted sources — use when handling external input safely
 trigger: |
   This skill provides SECURITY UTILITIES - it should be referenced by other skills,
   not invoked directly by users. Auto-integrate when:

@@ -3,7 +3,7 @@ name: skill-debate
 user-invocable: true
 aliases:
   - debate
-description: Structured four-way AI debates between Claude, Sonnet, Gemini, and Codex
+description: Structured four-way AI debates between Claude, Sonnet, Gemini, and Codex — use for critical decisions
 context: fork
 trigger: |
   AUTOMATICALLY ACTIVATE when user says:

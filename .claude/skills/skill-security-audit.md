@@ -3,7 +3,7 @@ name: octopus-security-audit
 aliases:
   - security
   - security-audit
-description: OWASP compliance, vulnerability scanning, and adversarial red team testing
+description: OWASP compliance, vulnerability scanning, and adversarial red team testing — use for security reviews
 trigger: |
   Use this skill when the user says "security audit this code", "find vulnerabilities in X",
   "red team review", "pentest this API", or "check for OWASP issues".

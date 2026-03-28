@@ -8,7 +8,7 @@ CONFIG_FILE="${HOME}/.claude-octopus/config/providers.json"
 CACHE_FILE="/tmp/octo-model-cache-${USER:-${USERNAME:-unknown}}-${CLAUDE_CODE_SESSION:-global}.json"
 
 # Known providers and phases for validation
-KNOWN_PROVIDERS="codex gemini claude perplexity openrouter"
+KNOWN_PROVIDERS="codex gemini claude perplexity openrouter opencode"
 KNOWN_PHASES="discover define develop deliver quick debate review security research"
 
 # Colors
@@ -74,6 +74,11 @@ ensure_config() {
     "perplexity": {
       "default": "sonar-pro",
       "fast": "sonar"
+    },
+    "opencode": {
+      "default": "google/gemini-2.5-flash",
+      "fast": "google/gemini-2.5-flash",
+      "research": "z-ai/glm-5.1"
     }
   },
   "routing": {
@@ -88,9 +93,9 @@ ensure_config() {
     }
   },
   "tiers": {
-    "budget": { "codex": "mini", "gemini": "flash" },
-    "standard": { "codex": "default", "gemini": "default" },
-    "premium": { "codex": "default", "gemini": "default" }
+    "budget": { "codex": "mini", "gemini": "flash", "opencode": "fast" },
+    "standard": { "codex": "default", "gemini": "default", "opencode": "default" },
+    "premium": { "codex": "default", "gemini": "default", "opencode": "default" }
   },
   "overrides": {}
 }
@@ -128,7 +133,7 @@ cmd_list() {
     # Environment overrides
     echo -e "\n${YELLOW}Environment Overrides:${NC}"
     local has_env=false
-    for var in OCTOPUS_CODEX_MODEL OCTOPUS_GEMINI_MODEL OCTOPUS_PERPLEXITY_MODEL OCTOPUS_COST_MODE OCTOPUS_TRACE_MODELS; do
+    for var in OCTOPUS_CODEX_MODEL OCTOPUS_GEMINI_MODEL OCTOPUS_PERPLEXITY_MODEL OCTOPUS_OPENCODE_MODEL OCTOPUS_COST_MODE OCTOPUS_TRACE_MODELS; do
         if [[ -n "${!var:-}" ]]; then
             echo "  $var=${!var}"
             has_env=true
@@ -198,7 +203,7 @@ cmd_verify() {
     log_info "Verifying model accessibility..."
 
     local errors=0
-    for cli in codex gemini claude; do
+    for cli in codex gemini claude opencode; do
         if command -v "$cli" &>/dev/null; then
             local model
             model=$(jq -r --arg p "$cli" '.providers[$p].default // "n/a"' "$CONFIG_FILE")
@@ -308,6 +313,10 @@ cmd_models() {
         "z-ai/glm-5|203|yes|no|no|openrouter|standard|active"
         "moonshotai/kimi-k2.5|262|yes|yes|no|openrouter|standard|active"
         "deepseek/deepseek-r1-0528|164|yes|no|yes|openrouter|standard|active"
+        "google/gemini-2.5-flash|1000|yes|no|no|opencode|budget|active"
+        "openai/gpt-5.4|400|yes|yes|no|opencode|premium|active"
+        "openai/gpt-5.4-mini|400|yes|no|no|opencode|budget|active"
+        "z-ai/glm-5.1|203|yes|no|no|opencode|standard|active"
     )
 
     for entry in "${models[@]}"; do

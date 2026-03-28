@@ -370,12 +370,14 @@ When the user invokes `/octo:model-config`, you MUST:
    - Split on `.`: provider=`opencode`, capability=`research`
    - Validate the base provider against the whitelist
    - Write to `.providers.<provider>.<capability>` in the config file:
+
    ```bash
    local config_file="${HOME}/.claude-octopus/config/providers.json"
    jq --arg p "opencode" --arg c "research" --arg m "z-ai/glm-5.1" \
      '.providers[$p][$c] = $m' "$config_file" > "${config_file}.tmp.$$" && mv "${config_file}.tmp.$$" "$config_file"
    echo "✓ Set opencode.research → z-ai/glm-5.1"
    ```
+
    This works for any provider, not just OpenCode (e.g., `codex.reasoning o3`).
 
 5. **Set Phase Routing** (`phase <phase> <model>`):

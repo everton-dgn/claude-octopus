@@ -9,7 +9,7 @@ This file contains OpenCode-specific instructions for Claude Octopus workflows.
 - **API Key**: Varies by backend — OAuth for Google, API keys for OpenAI/Z.AI/MiniMax
 - **CLI Command**: `opencode run`
 - **Agent Types**: `opencode`, `opencode-fast`, `opencode-research`
-- **Cost**: Variable — free for google/ OAuth, pay-per-use for openai/ API, depends on backend model
+- **Cost**: Variable — free for Google OAuth, pay-per-use for OpenAI API, depends on backend model
 
 ## Detection
 
@@ -17,17 +17,20 @@ This file contains OpenCode-specific instructions for Claude Octopus workflows.
 - Auth file: `~/.local/share/opencode/auth.json`
 - Validation: `timeout 3 opencode auth list` (non-blocking check)
 
-If the CLI is not installed or not authenticated, silently skip — no errors, no warnings.
+Workflows silently skip OpenCode if the CLI is not installed or not authenticated. Diagnostic tools (`/octo:doctor`) will still report the provider status.
 
 ## Authentication Setup
 
 ### Option 1: Interactive Login (recommended)
+
 ```bash
 opencode auth login
 ```
+
 Authenticates via credential flow for supported backends (Google, OpenAI).
 
 ### Option 2: Environment Variables (per backend)
+
 ```bash
 export GITHUB_TOKEN="ghp_..."           # GitHub Copilot + GitHub Models
 export OPENROUTER_API_KEY="sk-or-..."   # OpenRouter (100+ models)
@@ -36,6 +39,7 @@ export MINIMAX_API_KEY="..."            # MiniMax models
 ```
 
 ### Option 3: Combined (maximum backend coverage)
+
 Run `opencode auth login` for OAuth backends, then set env vars for API-key backends.
 
 ## Multi-Provider Architecture

@@ -222,10 +222,19 @@ cmd_verify() {
 }
 
 cmd_set() {
-    local provider="$1"
+    local provider_arg="$1"
     local model="$2"
     local session=false
     local force=false
+    local provider="$provider_arg"
+    local capability=""
+
+    # Parse dot syntax: provider.capability (e.g., opencode.research)
+    if [[ "$provider_arg" == *.* ]]; then
+        provider="${provider_arg%%.*}"
+        capability="${provider_arg#*.}"
+    fi
+
     for arg in "${@:3}"; do
         [[ "$arg" == "--session" ]] && session=true
         [[ "$arg" == "--force" ]] && force=true
@@ -252,7 +261,11 @@ cmd_set() {
     ensure_config
 
     # v8.49.0: Use jq --arg for injection safety
-    if [[ "$session" == "true" ]]; then
+    if [[ -n "$capability" ]]; then
+        jq --arg p "$provider" --arg c "$capability" --arg m "$model" \
+            '.providers[$p][$c] = $m' "$CONFIG_FILE" > "${CONFIG_FILE}.tmp.$$" && mv "${CONFIG_FILE}.tmp.$$" "$CONFIG_FILE"
+        log_info "Set capability model: ${provider}.${capability} → $model"
+    elif [[ "$session" == "true" ]]; then
         jq --arg p "$provider" --arg m "$model" '.overrides[$p] = $m' "$CONFIG_FILE" > "${CONFIG_FILE}.tmp.$$" && mv "${CONFIG_FILE}.tmp.$$" "$CONFIG_FILE"
         log_info "Set session override: $provider → $model"
     else

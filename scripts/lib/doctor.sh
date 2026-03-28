@@ -185,11 +185,20 @@ doctor_check_providers() {
     # OpenCode CLI (optional — multi-provider router, v9.11.0)
     if command -v opencode &>/dev/null; then
         local opencode_auth="none"
+        # Portable timeout: prefer gtimeout (macOS via coreutils), fallback to timeout
+        local _timeout_cmd="timeout"
+        command -v gtimeout &>/dev/null && _timeout_cmd="gtimeout"
         if [[ -f "${HOME}/.local/share/opencode/auth.json" ]]; then
-            if timeout 3 opencode auth list &>/dev/null; then
+            if "$_timeout_cmd" 3 opencode auth list &>/dev/null; then
                 opencode_auth="multi"
             else
                 opencode_auth="expired"
+            fi
+        fi
+        # Check env-based auth if file-based auth not found
+        if [[ "$opencode_auth" == "none" ]]; then
+            if [[ -n "${GITHUB_TOKEN:-}" || -n "${OPENROUTER_API_KEY:-}" || -n "${Z_AI_API_KEY:-}" || -n "${MINIMAX_API_KEY:-}" ]]; then
+                opencode_auth="env"
             fi
         fi
         if [[ "$opencode_auth" != "none" && "$opencode_auth" != "expired" ]]; then

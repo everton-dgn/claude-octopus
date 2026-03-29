@@ -8,9 +8,7 @@ show_config_summary() {
     load_providers_config
 
     echo ""
-    echo -e "${CYAN}╔═══════════════════════════════════════════════════════════════╗${NC}"
-    echo -e "${CYAN}║  ${MAGENTA}🐙 CLAUDE OCTOPUS CONFIGURATION SUMMARY${CYAN}                    ║${NC}"
-    echo -e "${CYAN}╚═══════════════════════════════════════════════════════════════╝${NC}"
+    octopus_header "CLAUDE OCTOPUS CONFIGURATION SUMMARY" "$CYAN"
     echo ""
 
     # Helper function to get tier detection indicator

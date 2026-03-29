@@ -625,7 +625,7 @@ show_agent_recommendations() {
 
     echo ""
     echo -e "${CYAN}${_HEAVY}${NC}"
-    echo -e "${CYAN}🐙 Multiple tentacles could handle this task:${NC}"
+    echo -e "${CYAN}🐙 Multiple providers could handle this task:${NC}"
     echo ""
 
     local i=1

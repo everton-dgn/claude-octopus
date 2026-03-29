@@ -669,9 +669,7 @@ EOF
     # Conclusion Ceremony (v7.13.2 - Issue #10)
     # ═══════════════════════════════════════════════════════════════════════
     echo ""
-    echo -e "${GREEN}${_BOX_TOP}${NC}"
-    echo -e "${GREEN}║  ✅ DEBATE CONCLUDED                                      ║${NC}"
-    echo -e "${GREEN}${_BOX_BOT}${NC}"
+    octopus_complete "Debate"
     echo ""
     echo -e "  ${GREEN}✓${NC} $rounds rounds completed"
     echo -e "  ${GREEN}✓${NC} All three perspectives analyzed"

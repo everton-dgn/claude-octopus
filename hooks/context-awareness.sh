@@ -124,5 +124,5 @@ esac
 
 # Return hook response with context warning
 cat <<EOF
-{"decision":"continue","additionalContext":"[Octopus Context Monitor] ${MSG}"}
+{"decision":"continue","additionalContext":"[🐙 Octopus] ${MSG}"}
 EOF

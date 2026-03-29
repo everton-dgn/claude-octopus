@@ -18,7 +18,7 @@ fi
 
 # Build the enforcement context string with Iron Laws extracted from skills
 read -r -d '' CONTEXT <<'RULES' || true
-<CONTEXT-REINFORCEMENT>
+<CONTEXT-REINFORCEMENT source="🐙 Octopus">
 ## Iron Laws (re-injected after context compaction)
 
 These rules MUST be followed at all times, even if earlier conversation context

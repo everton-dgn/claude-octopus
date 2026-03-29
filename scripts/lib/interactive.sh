@@ -85,9 +85,7 @@ show_error() {
     IFS=':' read -r err_code err_msg err_fix err_help <<< "$error_def"
 
     echo "" >&2
-    echo -e "${RED}╔═══════════════════════════════════════════════════════════════╗${NC}" >&2
-    echo -e "${RED}║  ✗ Error $err_code                                              ║${NC}" >&2
-    echo -e "${RED}╚═══════════════════════════════════════════════════════════════╝${NC}" >&2
+    octopus_header "Error $err_code" "$RED" >&2
     echo "" >&2
     echo -e "  ${RED}$err_msg${NC}" >&2
 

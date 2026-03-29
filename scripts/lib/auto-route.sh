@@ -254,7 +254,7 @@ $prompt" 60 "code-reviewer" "auto-route" 2>/dev/null) || true
             echo -e "${CYAN}${_BOX_TOP}${NC}"
             echo -e "${CYAN}║  🎯 EMPATHIZE - UX Research Synthesis                     ║${NC}"
             echo -e "${CYAN}${_BOX_BOT}${NC}"
-            echo "  🐙 Extending empathy tentacles into user understanding..."
+            echo "  🐙 Dispatching UX research across providers..."
             echo ""
             empathize_research "$prompt"
             return
@@ -263,7 +263,7 @@ $prompt" 60 "code-reviewer" "auto-route" 2>/dev/null) || true
             echo -e "${CYAN}${_BOX_TOP}${NC}"
             echo -e "${CYAN}║  📊 ADVISE - Strategic Consulting                         ║${NC}"
             echo -e "${CYAN}${_BOX_BOT}${NC}"
-            echo "  🐙 Wrapping strategic tentacles around the problem..."
+            echo "  🐙 Running multi-provider strategic analysis..."
             echo ""
             advise_strategy "$prompt"
             return
@@ -272,7 +272,7 @@ $prompt" 60 "code-reviewer" "auto-route" 2>/dev/null) || true
             echo -e "${CYAN}${_BOX_TOP}${NC}"
             echo -e "${CYAN}║  📚 SYNTHESIZE - Research Literature Review               ║${NC}"
             echo -e "${CYAN}${_BOX_BOT}${NC}"
-            echo "  🐙 Weaving knowledge tentacles through the literature..."
+            echo "  🐙 Synthesizing research across providers..."
             echo ""
             synthesize_research "$prompt"
             return
@@ -560,7 +560,7 @@ Format as markdown. Be specific and actionable."
                 done
             } > "$final_report"
 
-            echo -e "  ${GREEN}✓${NC} Full audit complete!"
+            octopus_complete "Full audit"
             echo -e "  ${CYAN}Report:${NC} $final_report"
             echo ""
 

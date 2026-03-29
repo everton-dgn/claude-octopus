@@ -47,6 +47,7 @@ source "${SCRIPT_DIR}/provider-router.sh"
 source "${SCRIPT_DIR}/agent-teams-bridge.sh"
 
 # Source Wave 1 extractions (v9.3.0 decomposition)
+source "${SCRIPT_DIR}/lib/common.sh" 2>/dev/null || true
 source "${SCRIPT_DIR}/lib/utils.sh" 2>/dev/null || true
 source "${SCRIPT_DIR}/lib/similarity.sh" 2>/dev/null || true
 source "${SCRIPT_DIR}/lib/models.sh" 2>/dev/null || true

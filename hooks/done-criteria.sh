@@ -66,6 +66,6 @@ fi
 # ── Emit additional context if compound task detected ────────────────────────
 
 if $compound; then
-    CONTEXT="[Compound Task] This request contains multiple distinct actions. Before executing: (1) List specific, verifiable completion criteria for EACH part. (2) Execute each part methodically. (3) Before declaring done, verify EACH criterion is met. Do not skip any part. A task is not done until every criterion is verified."
+    CONTEXT="[🐙 Octopus] Compound task detected — multiple distinct actions. Before executing: (1) List specific, verifiable completion criteria for EACH part. (2) Execute each part methodically. (3) Before declaring done, verify EACH criterion is met. Do not skip any part. A task is not done until every criterion is verified."
     echo "{\"hookSpecificOutput\":{\"hookEventName\":\"UserPromptSubmit\",\"additionalContext\":\"${CONTEXT}\"}}"
 fi

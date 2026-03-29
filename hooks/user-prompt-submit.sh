@@ -230,7 +230,7 @@ if [[ -n "$INTENT" ]]; then
 import sys, json
 print(json.dumps(sys.stdin.read())[1:-1])" 2>/dev/null) || true
 
-        CONTEXT_MSG="[🐙 Octopus Auto-Invoke] Detected: ${INTENT} (${CONFIDENCE} confidence, ${SIGNAL_STRENGTH} signal). MANDATORY: Before responding to the user, you MUST invoke Skill(skill: \\\"${SKILL_NAME}\\\", args: \\\"${ESCAPED_ARGS}\\\"). Do NOT respond to the prompt directly — the skill handles the full response. This is an auto-invocation from the Claude Octopus plugin."
+        CONTEXT_MSG="[🐙 Octopus] Auto-invoke: ${INTENT} (${CONFIDENCE}, ${SIGNAL_STRENGTH}). MANDATORY: Invoke Skill(skill: \\\"${SKILL_NAME}\\\", args: \\\"${ESCAPED_ARGS}\\\") before responding. The skill handles the full response."
     else
         # Standard behavior: inject persona context only
         CONTEXT_MSG="[🐙 Octopus] Detected intent: ${INTENT} (${CONFIDENCE} confidence)."

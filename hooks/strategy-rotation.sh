@@ -183,6 +183,6 @@ if [[ "$CONSECUTIVE" -ge "$THRESHOLD" ]]; then
     ROTATION_MSG="STRATEGY ROTATION NEEDED: The ${TOOL_DISPLAY} tool has failed ${CONSECUTIVE} consecutive times. This approach is not working. You MUST try a fundamentally different approach:\\n- If you've been running the same command with variations, try a completely different command\\n- If you've been editing the same file, consider the problem is elsewhere\\n- If you've been retrying after the same error, step back and investigate the root cause\\n- State what you'll do differently BEFORE attempting it"
 
     cat <<EOF
-{"additionalContext":"[Octopus Strategy Rotation] ${ROTATION_MSG}"}
+{"additionalContext":"[🐙 Octopus] ${ROTATION_MSG}"}
 EOF
 fi

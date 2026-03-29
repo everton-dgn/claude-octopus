@@ -48,7 +48,16 @@ Providers:
 - 🐙 Debate - Multi-AI deliberation
 - 🐙 Embrace - Full 4-phase workflow
 
-### Examples
+### Compact Mode
+
+When `OCTOPUS_COMPACT_BANNERS=true` is set, use a condensed single-line banner instead:
+```
+🐙 Discover — Multi-provider research | 🔴🟡🔵
+```
+
+This is preferred for repeat users who don't need the full provider block every time.
+
+### Examples (Standard Mode)
 
 **Research workflow:**
 ```

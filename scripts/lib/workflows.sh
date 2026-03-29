@@ -274,10 +274,7 @@ probe_discover() {
     local task_group="$_ts"
 
     echo ""
-    echo -e "${MAGENTA}${_BOX_TOP}${NC}"
-    echo -e "${MAGENTA}║  ${GREEN}RESEARCH${MAGENTA} (Phase 1/4) - Parallel Exploration              ║${NC}"
-    echo -e "${MAGENTA}║  Exploring from multiple perspectives...                  ║${NC}"
-    echo -e "${MAGENTA}${_BOX_BOT}${NC}"
+    octopus_phase_banner "RESEARCH (Phase 1/4)" "Parallel Exploration" "$MAGENTA"
     echo ""
 
     log INFO "Phase 1: Parallel exploration with multiple perspectives"
@@ -576,10 +573,7 @@ grasp_define() {
     task_group=$(date +%s)
 
     echo ""
-    echo -e "${MAGENTA}${_BOX_TOP}${NC}"
-    echo -e "${MAGENTA}║  ${GREEN}DEFINE${MAGENTA} (Phase 2/4) - Consensus Building                  ║${NC}"
-    echo -e "${MAGENTA}║  Building agreement on the approach...                    ║${NC}"
-    echo -e "${MAGENTA}${_BOX_BOT}${NC}"
+    octopus_phase_banner "DEFINE (Phase 2/4)" "Consensus Building" "$MAGENTA"
     echo ""
 
     log INFO "Phase 2: Building consensus on problem definition"
@@ -675,10 +669,7 @@ tangle_develop() {
     task_group=$(date +%s)
 
     echo ""
-    echo -e "${MAGENTA}${_BOX_TOP}${NC}"
-    echo -e "${MAGENTA}║  ${GREEN}DEVELOP${MAGENTA} (Phase 3/4) - Implementation                     ║${NC}"
-    echo -e "${MAGENTA}║  Building with quality validation...                      ║${NC}"
-    echo -e "${MAGENTA}${_BOX_BOT}${NC}"
+    octopus_phase_banner "DEVELOP (Phase 3/4)" "Implementation" "$MAGENTA"
     echo ""
 
     log INFO "Phase 3: Parallel development with validation gates"
@@ -822,10 +813,7 @@ ink_deliver() {
     task_group=$(date +%s)
 
     echo ""
-    echo -e "${MAGENTA}${_BOX_TOP}${NC}"
-    echo -e "${MAGENTA}║  ${GREEN}DELIVER${MAGENTA} (Phase 4/4) - Final Quality Gates                ║${NC}"
-    echo -e "${MAGENTA}║  Validating and shipping...                               ║${NC}"
-    echo -e "${MAGENTA}${_BOX_BOT}${NC}"
+    octopus_phase_banner "DELIVER (Phase 4/4)" "Final Quality Gates" "$MAGENTA"
     echo ""
 
     log INFO "Phase 4: Finalizing delivery with quality checks"
@@ -998,9 +986,7 @@ EOF
 
     log INFO "Delivery document: $delivery_file"
     echo ""
-    echo -e "${GREEN}${_BOX_TOP}${NC}"
-    echo -e "${GREEN}║  Delivery complete!                                       ║${NC}"
-    echo -e "${GREEN}${_BOX_BOT}${NC}"
+    octopus_complete "Delivery"
     echo -e "Final document: ${CYAN}$delivery_file${NC}"
     echo ""
 }

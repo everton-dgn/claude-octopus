@@ -50,9 +50,9 @@ evaluate_branch_condition() {
 get_branch_display() {
     local branch="$1"
     case "$branch" in
-        premium) echo "premium (🐙 all tentacles engaged)" ;;
-        standard) echo "standard (🐙 balanced grip)" ;;
-        fast) echo "fast (🐙 quick touch)" ;;
+        premium) echo "premium (🐙 all providers)" ;;
+        standard) echo "standard (🐙 balanced)" ;;
+        fast) echo "fast (🐙 minimal)" ;;
         *) echo "$branch" ;;
     esac
 }

@@ -191,8 +191,8 @@ $challenge_result
 
 ### Quality Gate: ${gate_status}
 - Success Rate: ${success_rate}% (threshold: ${QUALITY_THRESHOLD}%)
-- Successful: ${success_count}/${total} tentacles
-- Failed: ${fail_count}/${total} tentacles
+- Successful: ${success_count}/${total} providers
+- Failed: ${fail_count}/${total} providers
 - Retry Attempts: ${quality_retry_count}/${MAX_QUALITY_RETRIES}
 
 ### Subtask Results
@@ -201,7 +201,7 @@ EOF
 
         echo ""
         echo -e "${gate_color}${_BOX_TOP}${NC}"
-        echo -e "${gate_color}║  Quality Gate: ${gate_status} (${success_rate}% of tentacles succeeded)${NC}"
+        echo -e "${gate_color}║  Quality Gate: ${gate_status} (${success_rate}% of providers succeeded)${NC}"
         echo -e "${gate_color}${_BOX_BOT}${NC}"
 
         if [[ "$gate_status" == "FAILED" ]]; then

@@ -735,7 +735,7 @@ generate_analytics_report() {
 🐙 Claude Octopus Agent Usage Report (Last $period Days)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Top 10 Most Used Tentacles:
+Top 10 Most Used Agents:
 EOF
 
     awk -F',' -v cutoff="$cutoff_date" '
@@ -745,7 +745,7 @@ EOF
 
     cat <<EOF
 
-Least Used Tentacles:
+Least Used Agents:
 EOF
 
     awk -F',' -v cutoff="$cutoff_date" '

@@ -328,6 +328,22 @@ The workflow continues with available providers. You'll see the status in the vi
 
 ---
 
+## Community
+
+Join [r/ClaudeOctopus](https://www.reddit.com/r/ClaudeOctopus/) for help, workflow tips, showcases, and updates.
+
+[![Star History Chart](https://api.star-history.com/image?repos=nyldn/claude-octopus&type=date&legend=top-left)](https://www.star-history.com/?repos=nyldn%2Fclaude-octopus&type=date&legend=top-left)
+
+### Contributing
+
+1. [Report issues](https://github.com/nyldn/claude-octopus/issues)
+2. Submit PRs following existing code style
+3. `git clone https://github.com/nyldn/claude-octopus.git && make test`
+
+See [CONTRIBUTING.md](docs/CONTRIBUTING.md) for details.
+
+---
+
 ## Documentation
 
 - [Documentation Guide](docs/README.md) — Start here
@@ -347,22 +363,6 @@ The workflow continues with available providers. You'll see the status in the vi
 - **[obra/superpowers](https://github.com/obra/superpowers)** — Discipline skills patterns. MIT License.
 - **[nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)** — BM25 design intelligence databases. MIT License.
 - **[UK Design Council](https://www.designcouncil.org.uk/our-resources/the-double-diamond/)** — Double Diamond methodology.
-
----
-
-## Community
-
-Join [r/ClaudeOctopus](https://www.reddit.com/r/ClaudeOctopus/) for help, workflow tips, showcases, and updates.
-
-[![Star History Chart](https://api.star-history.com/image?repos=nyldn/claude-octopus&type=date&legend=top-left)](https://www.star-history.com/?repos=nyldn%2Fclaude-octopus&type=date&legend=top-left)
-
-## Contributing
-
-1. [Report issues](https://github.com/nyldn/claude-octopus/issues)
-2. Submit PRs following existing code style
-3. `git clone https://github.com/nyldn/claude-octopus.git && make test`
-
-See [CONTRIBUTING.md](docs/CONTRIBUTING.md) for details.
 
 ---
 

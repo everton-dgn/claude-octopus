@@ -374,3 +374,49 @@ claude \
 ### Note
 
 The main `CLAUDE.md` (this file) contains essential visual indicators and workflow triggers that are **always loaded** by default.
+
+---
+
+## E2E Testing Infrastructure
+
+Claude Octopus has automated end-to-end smoke testing running on an Oracle Cloud VPS (`ssh amy`), checking for new releases every 2 hours.
+
+### Architecture
+
+- **Phase A (Docker):** Install → structure verify → unit tests → uninstall in a disposable 634MB container
+- **Phase B (Native):** Live command tests with authed Claude Code, Codex, and Gemini
+
+### Test Coverage (29 tests)
+
+Phase A tests install lifecycle, file structure (commands ≥40, skills ≥45, personas ≥30), hooks.json validity, script syntax, build-fleet.sh output, unit test suite (>60% threshold), and clean uninstall.
+
+Phase B tests version match against latest release, `/octo:doctor` and `/octo:setup` via `claude --print`, provider detection, fleet diversity (5+ agents, 4+ families), orchestrate.sh doctor, script syntax, manifests, CLAUDE.md, symlinks, and CHANGELOG version mention.
+
+### Key Files
+
+Source (in octopus-dev, NOT the plugin):
+- `docs/e2e/e2e-runner.sh` — Cron entry, version checking, issue filing
+- `docs/e2e/e2e-install-test.sh` — Phase A (Docker)
+- `docs/e2e/e2e-command-test.sh` — Phase B (native)
+- `docs/e2e/Dockerfile.e2e` — Minimal Docker image
+- `docs/e2e/deploy-to-vps.sh` — One-command deploy
+
+### Maintenance
+
+```bash
+# Deploy changes
+scp docs/e2e/*.sh amy:/home/openclaw/.octopus-e2e/
+
+# Force re-run
+ssh amy 'rm -f ~/.octopus-e2e/last-tested-version && ~/.octopus-e2e/e2e-runner.sh'
+
+# Check status
+ssh amy 'cat ~/.octopus-e2e/last-tested-version && tail -20 ~/.octopus-e2e/logs/cron.log'
+
+# Rebuild Docker image after Dockerfile changes
+ssh amy 'cd ~/.octopus-e2e && docker build -t octopus-e2e:latest -f Dockerfile.e2e .'
+```
+
+### Dynamic Fleet Dispatch
+
+`scripts/helpers/build-fleet.sh` is the single source of truth for provider-to-perspective assignment. All skills call it instead of hardcoding provider lists. It enforces model family diversity (OpenAI, Google, Microsoft, Alibaba, Anthropic) to prevent agreement bias from same-family models. When adding new workflows, always use build-fleet.sh — never hardcode provider names in skills.

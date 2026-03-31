@@ -1,3 +1,42 @@
+## [9.17.0] - 2026-03-31
+
+### Added
+
+- **Discipline mode** (`/octo:discipline on`) — 8 auto-invoke gates enforced at SessionStart. 5 development gates (brainstorm, verification, review, response, investigation) + 3 knowledge work gates (context detection, structured decisions, intent locking). Off by default, persists across sessions. `/octo:quick` bypasses all gates.
+- **Cursor IDE plugin support** — `.cursor-plugin/plugin.json` for Cursor marketplace compatibility.
+- **OpenCode install guide** — `.opencode/INSTALL.md` with symlink-based skill discovery.
+- **Codex CLI compatibility layer** — `scripts/build-codex-skills.sh` generates `.codex/skills/` from `.claude/skills/`, `OCTOPUS_HOST` detects codex/gemini hosts, graceful degradation for non-Claude hosts. 80-test suite.
+- **Verification gate skill** — "Evidence before claims" iron law. Replaces and consolidates old `skill-verify`. Red-green regression examples.
+- **Review response skill** — How to handle code review feedback. Verify before implementing, push back when wrong, never agree blindly.
+- **Two-stage post-implementation review** — `flow-develop` now runs spec compliance check first, code quality review second, E2E verification third — all in parallel.
+- **Comparison table** — Claude Code vs Superpowers vs Octopus in collapsible README section.
+- **Built with Claude badge** + CI status badge + test count badge in README.
+- **GitHub Discussions enabled** — pinned "Start Here" post with FAQ.
+- 3 good-first-issue tickets created (#221, #222, #223).
+
+### Changed
+
+- **README opening rewritten** — leads with the problem (blind spots) and the benefit (they surface before you ship), not a feature list.
+- **README headings renamed** — benefit-first titles (e.g., "Top 8 Tentacles" → "8 Commands That Matter Most", "Reaction Engine" → "Built-in Reaction Engine").
+- **Root directory streamlined** — 25 → 19 visible items. Moved CODE_OF_CONDUCT, CONTRIBUTING, PRIVACY to `docs/`, templates to `config/templates/`, workflows to `config/workflows/`, assets to `docs/assets/`.
+- **Marketplace description** — benefit-driven copy instead of version-note changelog summary.
+- **`.claude-plugin/README.md` rewritten** — 27-line internal dev note → 65-line user-facing landing page with before/after example, quickstart, common jobs table.
+- **Star history chart** moved from mid-page to bottom of README.
+- **What's New v9 row** updated with circuit breakers, loop self-regulation, HUD, cache-aligned prompts.
+
+### Fixed
+
+- **Marketplace sync** — `sync-marketplace.sh` now counts skills from `.claude/skills/` (source of truth, 51) instead of `skills/*/SKILL.md` (Codex copies, 45).
+- **CI green** — docs-sync test matches renamed headings + emoji prefix, plugin expert review accepts `docs/assets/`, empty `Stop: []` hook array removed.
+- **Hooks.json** — removed empty Stop array that caused validation failure in E2E runner.
+
+### Removed
+
+- **PostHog telemetry** — unreliable hook delivery (CLAUDE_PLUGIN_ROOT not always set, events only flush on SessionEnd). PRIVACY.md already stated "no telemetry" — now that's actually true.
+- **`skill-verify`** — consolidated into `skill-verification-gate` (examples preserved, multi-provider context added).
+
+---
+
 ## [9.16.0] - 2026-03-29
 
 ### Skill Enhancements

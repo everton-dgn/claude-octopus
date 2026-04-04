@@ -692,6 +692,9 @@ function getRtkGain() {
       };
       return rtkGainCache.data;
     }
+    // Empty output — cache null to avoid repeated 2s subprocess calls
+    rtkGainCache = { data: null, ts: now };
+    return null;
   } catch { /* rtk not installed or gain failed */ }
   rtkGainCache = { data: null, ts: now };
   return null;
